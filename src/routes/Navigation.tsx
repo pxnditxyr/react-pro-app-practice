@@ -6,6 +6,8 @@ import {
   Navigate,
 } from 'react-router-dom';
 
+import { LazyPage1, LazyPage2, LazyPage3 } from '../01-lazyload/pages';
+
 import logo from '../assets/yuki.svg';
 
 export const Navigation = () => {
@@ -44,9 +46,9 @@ export const Navigation = () => {
 
       </div>
       <Routes>
-        <Route path="about" element={ <h1> About Page xD </h1> } />
-        <Route path="contact" element={ <h1> Contact Page xD </h1> } />
-        <Route path="login" element={ <h1> Login Page xD </h1> } />
+        <Route path="lazy1" element={ <LazyPage1 /> } />
+        <Route path="lazy2" element={ <LazyPage2 /> } />
+        <Route path="lazy3" element={ <LazyPage3 /> } />
         <Route path="/" element={ <h1> Home Page xD </h1> } />
         <Route path="*" element={ <Navigate to="/" /> } />
       </Routes>
