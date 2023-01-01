@@ -5,6 +5,7 @@ import {
   NavLink,
   Navigate,
 } from 'react-router-dom';
+import { ShoppingPage } from '../02-component-patterns/pages/ShoppingPage';
 
 import logo from '../assets/yuki.svg';
 
@@ -19,7 +20,7 @@ export const Navigation = () => {
               <NavLink
                 to="/"
                 style={ ({ isActive }) => ({ color: isActive ? '#86C8BC' : '#FD8A8A' }) }
-              > Home </NavLink>
+              > Shopping Store </NavLink>
             </li>
             <li>
               <NavLink
@@ -47,7 +48,7 @@ export const Navigation = () => {
         <Route path="about" element={ <h1> About Page xD </h1> } />
         <Route path="contact" element={ <h1> Contact Page xD </h1> } />
         <Route path="login" element={ <h1> Login Page xD </h1> } />
-        <Route path="/" element={ <h1> Home Page xD </h1> } />
+        <Route path="/" element={ <ShoppingPage /> } />
         <Route path="*" element={ <Navigate to="/" /> } />
       </Routes>
     </BrowserRouter>
