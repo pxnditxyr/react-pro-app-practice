@@ -1,30 +1,27 @@
+import { createContext } from 'react';
 
 import { useProduct } from '../hooks/useProduct';
 import styles from '../styles/styles.module.css';
 
-// import noImage from '../assets/no-image.jpg';
+import { IProductContextProps, IProductCardProps } from '../interfaces';
 
+export const ProductContext = createContext<IProductContextProps>( {} as IProductContextProps );
 
-export const ProductCard = () => {
+const { Provider } = ProductContext;
+
+export const ProductCard = ( { children, product } : IProductCardProps ) => {
 
   const { productCount, increaseBy } = useProduct();
 
   return (
-    <div className={ styles.productCard }>
-      <img className={ styles.productImg } src="./coffee-mug.png" alt="Coffee Mug" />
-      {/* <img className={ styles.productImg } src={ noImage } alt="Coffee Mug" />  */}
-      <span className={ styles.productDescription }> Coffee Mug </span>
-      <div className={ styles.buttonsContainer }>
-        <button
-          className={ styles.buttonMinus }
-          onClick={ () => increaseBy( -1 ) }
-        > - </button>
-        <div className={ styles.countLabel }> { productCount } </div>
-        <button
-          className={ styles.buttonAdd }
-          onClick={ () => increaseBy( +1 ) }
-        > + </button>
+    <Provider value={{
+      productCount,
+      increaseBy,
+      product
+    }}>
+      <div className={ styles.productCard }>
+        { children }
       </div>
-    </div>
+    </Provider>
   );
 };
