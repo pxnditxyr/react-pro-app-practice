@@ -2,8 +2,6 @@ import { ProductCard, } from '../components';
 import { products } from '../data';
 import { useShoppingCart } from '../hooks/useShoppingCart';
 
-import { IProduct } from '../interfaces';
-
 import '../styles/custom-styles.css';
 
 
@@ -24,7 +22,7 @@ export const ShoppingPage = () => {
           flexWrap: 'wrap',
         }}>
         {
-          products.map( ( product : IProduct ) => (
+          products.map( ( product ) => (
             <ProductCard 
               className="bg-dark"
               key={ product.id }
