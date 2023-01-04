@@ -22,3 +22,14 @@ export interface IProductCardHOCProps {
   Buttons: ( Props : IProductButtonsProps ) => JSX.Element;
 };
 
+
+export interface IOnChangeArgs {
+  product: IProduct;
+  quantity: number;
+}
+
+export interface IProductInCart extends IProduct {
+  quantity: number;
+};
+
+

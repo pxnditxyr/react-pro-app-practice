@@ -1,14 +1,17 @@
-import { ProductButtons, ProductCard, ProductImage, ProductTitle } from '../components';
+import { ProductCard, } from '../components';
+import { products } from '../data';
+import { useShoppingCart } from '../hooks/useShoppingCart';
+
+import { IProduct } from '../interfaces';
 
 import '../styles/custom-styles.css';
 
-const product = {
-  id: '1',
-  title: 'Coffee Mug',
-  img: './coffee-mug.png',
-}
+
 
 export const ShoppingPage = () => {
+
+  const { shoppingCart, onProductQuantityChange } = useShoppingCart();
+
   return (
     <div
     >
@@ -20,52 +23,45 @@ export const ShoppingPage = () => {
           justifyContent: 'space-around',
           flexWrap: 'wrap',
         }}>
-        <ProductCard product={ product }>
-            <ProductCard.Image />
-            <ProductCard.Title title='Hello' />
-            <ProductCard.Buttons />
-        </ProductCard> 
-        <ProductCard
-          product={ product }
-          className="bg-dark"
-        >
-          <ProductImage className="custom-image"/>
-          <ProductTitle className="text-white font-bold"/>
-          <ProductButtons className="custom-buttons"/>
-        </ProductCard>
-        <ProductCard product={ product }
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-around',
-            alignItems: 'center',
-            padding: '1rem',
-            backgroundColor: 'lightblue',
-            borderRadius: '1rem',
-          }}
-        >
-            <ProductCard.Image 
-              style={{
-                width: '100%',
-                height: 'auto',
-                borderRadius: '1rem',
-              }}
-            />
-            <ProductCard.Title
-              title='Hello'
-              style={{
-                fontSize: '1.5rem',
-                fontWeight: 'bold',
-              }}
-            />
-            <ProductCard.Buttons
-              style={{
-                display: 'flex',
-                justifyContent: 'space-around',
-                width: '100%',
-              }}
-            />
-        </ProductCard>
+        {
+          products.map( ( product : IProduct ) => (
+            <ProductCard 
+              className="bg-dark"
+              key={ product.id }
+              onChange={ ( event ) => onProductQuantityChange( event ) }
+              product={ product }
+              value={ shoppingCart[ product.id ]?.quantity || 0 }
+            >
+              <ProductCard.Image className="custom-image" />
+              <ProductCard.Title className="text-white font-bold" />
+              <ProductCard.Buttons className="custom-buttons" />
+            </ProductCard>
+          ))
+        }
+        <div className="shopping-cart">
+          {
+            Object.values( shoppingCart ).map( product => (
+              <ProductCard
+                className="bg-dark"
+                key={ product.id }
+                onChange={ ( event ) => onProductQuantityChange( event ) }
+                product={ product }
+                style={{ width: '100px', }}
+                value={ product.quantity }
+              >
+                <ProductCard.Image className="custom-image" />
+                <ProductCard.Buttons
+                  className="custom-buttons"
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                  />
+              </ProductCard>    
+            ))
+          }
+          
+        </div>
       </div>
     </div>
   );
