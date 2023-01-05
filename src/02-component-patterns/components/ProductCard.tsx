@@ -1,38 +1,49 @@
-import { createContext, CSSProperties, ReactElement } from 'react';
+import { createContext, CSSProperties } from 'react';
 
 import { useProduct } from '../hooks/useProduct';
 import styles from '../styles/styles.module.css';
 
-import { IProductContextProps, IProduct, IOnChangeArgs } from '../interfaces';
-
-export interface IProps {
-  children?: ReactElement | ReactElement[];
-  className?: string;
-  onChange?: ( args : IOnChangeArgs ) => void;
-  value?: number;
-  product: IProduct;
-  style?: CSSProperties;
-};
-
-
+import { IProductContextProps, IProduct, IOnChangeArgs, IInitialValues, IProductCardHandlers } from '../interfaces';
 
 export const ProductContext = createContext<IProductContextProps>( {} as IProductContextProps );
-
 const { Provider } = ProductContext;
 
-export const ProductCard = ( { children, product, className, style, onChange, value } : IProps ) => {
+export interface IProps {
+  // children?: ReactElement | ReactElement[];
+  children?: ( args : IProductCardHandlers ) => JSX.Element;
+  className?: string;
+  initialValues?: IInitialValues;
+  onChange?: ( args : IOnChangeArgs ) => void;
+  product: IProduct;
+  style?: CSSProperties;
+  value?: number;
+};
 
-  const { productCount, increaseBy } = useProduct({ onChange, product, value });
-  
+export const ProductCard = ( { children, product, className, style, onChange, value, initialValues } : IProps ) => {
+
+  const { productCount, increaseBy, isMaxQuantityReached, maxQuantity, reset } = useProduct({
+    initialValues,
+    onChange,
+    product,
+    value,
+  });
 
   return (
     <Provider value={{
       productCount,
       increaseBy,
-      product
+      product,
+      maxQuantity: maxQuantity
     }}>
       <div className={ `${ styles.productCard } ${ className }` } style={ style }>
-        { children }
+        { children && children({
+          quantity: productCount,
+          isMaxQuantityReached,
+          maxQuantity: initialValues?.maxQuantity,
+          reset,
+          increaseBy,
+          product
+        }) }
       </div>
     </Provider>
   );

@@ -1,4 +1,4 @@
-import { CSSProperties, useContext } from 'react';
+import { CSSProperties, useCallback, useContext } from 'react';
 
 import { ProductContext } from './ProductCard';
 
@@ -10,7 +10,15 @@ export interface IProps {
 }
 
 export const ProductButtons = ( { className, style  } : IProps ) => {
-  const { increaseBy, productCount } = useContext( ProductContext );
+
+  const { increaseBy, productCount, maxQuantity } = useContext( ProductContext );
+  // TODO: useCallback is max reached dependencies maxCount, productCount
+
+  const isMaxReached = useCallback(
+    () => !!maxQuantity && productCount === maxQuantity,
+    [ productCount, maxQuantity]
+  );
+
   return (
     <div
       className={ `${ styles.buttonsContainer } ${ className }` }
@@ -22,7 +30,7 @@ export const ProductButtons = ( { className, style  } : IProps ) => {
       > - </button>
       <div className={ styles.countLabel }> { productCount } </div>
       <button
-        className={ styles.buttonAdd }
+        className={ `${ styles.buttonAdd } ${ isMaxReached() && styles.disabled }` }
         onClick={ () => increaseBy( +1 ) }
       > + </button>
     </div>

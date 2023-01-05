@@ -1,65 +1,69 @@
 import { ProductCard, } from '../components';
 import { products } from '../data';
-import { useShoppingCart } from '../hooks/useShoppingCart';
 
 import '../styles/custom-styles.css';
 
 
+const product = products[ 0 ];
 
 export const ShoppingPage = () => {
-
-  const { shoppingCart, onProductQuantityChange } = useShoppingCart();
 
   return (
     <div
     >
       <h1> Shopping Store </h1>
       <hr />
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-around',
-          flexWrap: 'wrap',
-        }}>
-        {
-          products.map( ( product ) => (
-            <ProductCard 
-              className="bg-dark"
-              key={ product.id }
-              onChange={ ( event ) => onProductQuantityChange( event ) }
-              product={ product }
-              value={ shoppingCart[ product.id ]?.quantity || 0 }
-            >
-              <ProductCard.Image className="custom-image" />
-              <ProductCard.Title className="text-white font-bold" />
-              <ProductCard.Buttons className="custom-buttons" />
-            </ProductCard>
-          ))
-        }
-        <div className="shopping-cart">
+      <div>
+        <ProductCard 
+          className="bg-dark"
+          key={ product.id }
+          product={ product }
+          initialValues={{
+            quantity: 10,
+            maxQuantity: 50,
+          }}
+        >
           {
-            Object.values( shoppingCart ).map( product => (
-              <ProductCard
-                className="bg-dark"
-                key={ product.id }
-                onChange={ ( event ) => onProductQuantityChange( event ) }
-                product={ product }
-                style={{ width: '100px', }}
-                value={ product.quantity }
-              >
+            ({ reset, quantity, increaseBy, isMaxQuantityReached }) => (
+              <>
                 <ProductCard.Image className="custom-image" />
-                <ProductCard.Buttons
-                  className="custom-buttons"
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                  />
-              </ProductCard>    
-            ))
+                <ProductCard.Title className="text-white font-bold" />
+                <ProductCard.Buttons className="custom-buttons" />
+                <div style={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  gap: '0.8rem',
+                  padding: '0.8rem 1rem',
+                }}>
+                  <button
+                    onClick={ reset }
+                    className="btn btn-danger"
+                  >
+                    Reset
+                  </button>
+                  <button
+                    onClick={ () => increaseBy( -2 ) }
+                    className="btn btn-primary"
+                  > -2 </button>
+                  {
+                    !isMaxQuantityReached &&
+                    <button
+                      className="btn btn-primary"
+                      onClick={ () => increaseBy( 2 ) }
+                    > +2 </button>
+                  }
+                  <span
+                    className="text-white font-bold"
+                    style={{
+                      fontSize: '1.2rem',
+                    }}
+                  > { quantity } </span>
+                </div>
+              </>
+            )
           }
-          
-        </div>
+        </ProductCard>
       </div>
     </div>
   );

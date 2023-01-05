@@ -35,3 +35,24 @@
   right: 10px;
   top: 0;
 }
+
+.btn {
+  border-radius: 4px;
+  padding: 5px 10px;
+  border: none;
+}
+
+.btn-danger {
+  color: #ffffff;
+  background-color: #ff0000;
+}
+
+.btn-success {
+  color: #ffffff;
+  background-color: #00ff00;
+}
+
+.btn-primary {
+  color: #ffffff;
+  background-color: #0000ff;
+}
